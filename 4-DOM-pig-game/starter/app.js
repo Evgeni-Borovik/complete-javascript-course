@@ -13,6 +13,21 @@ var scores, roundScore, activePlayer, gamePlaying;
 
 scores = [0, 0];
 roundScore = 0;
+activePlayer = 0; //0 - first player, 1 - second, which matches the position in array
+
+// document.querySelector("#current-" + activePlayer).textContent = dice; // this makes up id selector from two parts!
+
+document.querySelector(".dice").style.display = "none";
+
+document.getElementById("score-0").textContent = "0";
+document.getElementById("score-1").textContent = "0";
+document.getElementById("current-0").textContent = "0";
+document.getElementById("current-1").textContent = "0";
 
 
-
+document.querySelector(".btn-roll").addEventListener("click", function() {
+    var dice = Math.floor(Math.random() * 6) + 1; //generate random score
+    var diceDOM  = document.querySelector(".dice");
+    diceDOM.style.display = "block"; //unhide the dice image element
+    diceDOM.src = "dice-" + dice + ".png"; //insert the proper image file
+});
