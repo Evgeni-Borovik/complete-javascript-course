@@ -10,19 +10,18 @@ GAME RULES:
 */
 
 var scores, roundScore, activePlayer, gamePlaying;
+init();
 
-scores = [0, 0];
-roundScore = 0;
-activePlayer = 0; //0 - first player, 1 - second, which matches the position in array
-
-// document.querySelector("#current-" + activePlayer).textContent = dice; // this makes up id selector from two parts!
-
-document.querySelector(".dice").style.display = "none";
-
-document.getElementById("score-0").textContent = "0";
-document.getElementById("score-1").textContent = "0";
-document.getElementById("current-0").textContent = "0";
-document.getElementById("current-1").textContent = "0";
+function init() {
+    scores = [0, 0];
+    roundScore = 0;
+    activePlayer = 0; //0 - first player, 1 - second, which matches the position in array
+    document.querySelector(".dice").style.display = "none";
+    document.getElementById("score-0").textContent = "0";
+    document.getElementById("score-1").textContent = "0";
+    document.getElementById("current-0").textContent = "0";
+    document.getElementById("current-1").textContent = "0";
+};
 
 function nextPlayer() {
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
@@ -57,7 +56,18 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     document.querySelector("#score-" + activePlayer).textContent = scores[activePlayer];
 
     // check if player won the game
+    if (scores[activePlayer] >= 20) {
+        document.querySelector("#name-" + activePlayer).textContent = "Winner!";
+        document.querySelector(".dice").style.display = "none";
+        document.querySelector(".player-" + activePlayer + "-panel").classList.add("winner");
+        document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
+    } else {
+        // change the Player
+        nextPlayer();
+    }
+});
 
-    // change the Player
-    nextPlayer();
+
+document.querySelector(".btn-new").addEventListener("click", function () {
+    init();
 });
