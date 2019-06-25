@@ -24,22 +24,40 @@ document.getElementById("score-1").textContent = "0";
 document.getElementById("current-0").textContent = "0";
 document.getElementById("current-1").textContent = "0";
 
+function nextPlayer() {
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    roundScore = 0;
+    document.getElementById("current-0").textContent = "0";
+    document.getElementById("current-1").textContent = "0";
+    document.querySelector(".player-0-panel").classList.toggle("active");
+    document.querySelector(".player-1-panel").classList.toggle("active");
+    document.querySelector(".dice").style.display = "none";
+};
 
-document.querySelector(".btn-roll").addEventListener("click", function() {
+document.querySelector(".btn-roll").addEventListener("click", function () {
     var dice = Math.floor(Math.random() * 6) + 1; //generate random score
-    var diceDOM  = document.querySelector(".dice");
+    var diceDOM = document.querySelector(".dice");
     diceDOM.style.display = "block"; //unhide the dice image element
     diceDOM.src = "dice-" + dice + ".png"; //insert the proper image file
     if (dice !== 1) {
         roundScore += dice;
         document.querySelector("#current-" + activePlayer).textContent = roundScore;
     } else {
-        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-        roundScore = 0;
-        document.getElementById("current-0").textContent = "0";
-        document.getElementById("current-1").textContent = "0";
-        document.querySelector(".player-0-panel").classList.toggle("active");
-        document.querySelector(".player-1-panel").classList.toggle("active");
-        document.querySelector(".dice").style.display = "none";
+        // change the Player
+        nextPlayer();
     }
+});
+
+
+document.querySelector(".btn-hold").addEventListener("click", function () {
+    // add current score to global Player's score
+    scores[activePlayer] += roundScore;
+
+    // Update the UI with actual score
+    document.querySelector("#score-" + activePlayer).textContent = scores[activePlayer];
+
+    // check if player won the game
+
+    // change the Player
+    nextPlayer();
 });
