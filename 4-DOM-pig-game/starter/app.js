@@ -9,13 +9,14 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer, gamePlaying;
+var scores, roundScore, activePlayer, gamePlaying, prevDice;
 
 init();
 
 function init() {
     scores = [0, 0];
     roundScore = 0;
+    prevDice = 0;
     activePlayer = 0; //0 - first player, 1 - second, which matches the position in array
     gamePlaying = true;
     document.querySelector(".dice").style.display = "none";
@@ -35,6 +36,7 @@ function init() {
 function nextPlayer() {
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
     roundScore = 0;
+    prevDice = 0;
     document.getElementById("current-0").textContent = "0";
     document.getElementById("current-1").textContent = "0";
     document.querySelector(".player-0-panel").classList.toggle("active");
@@ -45,15 +47,22 @@ function nextPlayer() {
 document.querySelector(".btn-roll").addEventListener("click", function () {
     if (gamePlaying) {
         var dice = Math.floor(Math.random() * 6) + 1; //generate random score
-        var diceDOM = document.querySelector(".dice");
-        diceDOM.style.display = "block"; //unhide the dice image element
-        diceDOM.src = "dice-" + dice + ".png"; //insert the proper image file
-        if (dice !== 1) {
-            roundScore += dice;
-            document.querySelector("#current-" + activePlayer).textContent = roundScore;
-        } else {
-            // change the Player
+        if (dice === 6 && dice === prevDice) {
+            scores[activePlayer] = 0;
+            document.querySelector("#score-" + activePlayer).textContent = 0;
             nextPlayer();
+        } else {
+            var diceDOM = document.querySelector(".dice");
+            diceDOM.style.display = "block"; //unhide the dice image element
+            diceDOM.src = "dice-" + dice + ".png"; //insert the proper image file
+            if (dice !== 1) {
+                roundScore += dice;
+                document.querySelector("#current-" + activePlayer).textContent = roundScore;
+                prevDice = dice;
+            } else {
+                // change the Player
+                nextPlayer();
+            }
         }
     }
 });
